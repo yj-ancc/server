@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Temp</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <!--- index.html -->
+  <script src="http://maps.googleapis.com/maps/api/js"></script>
+  <script async src="https://pay.google.com/gp/p/js/pay.js" ></script>
+  <!--stripe payment-->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://js.stripe.com/v2/"></script>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+  <script type="text/javascript">
+  Stripe.setPublishableKey('pk_test_lwA7rd9PKOMVMBALROik4wdf');
+  </script>
+  <!--stripe payment-->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">
+<script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script type="text/javascript">
+   Stripe.setPublishableKey('pk_test_lwA7rd9PKOMVMBALROik4wdf');
+  //  Stripe.setPublishableKey('pk_live_H0scqiLa0pYKQgS4QHViQWZ8');
+  //It's now using the testing key, replace the key with the live version
+</script>
+
+
+
+
+</head>
+<body>
+
+
+<app-root></app-root>
+<script type="text/javascript" src="runtime.js"></script><script type="text/javascript" src="polyfills.js"></script><script type="text/javascript" src="styles.js"></script><script type="text/javascript" src="scripts.js"></script><script type="text/javascript" src="vendor.js"></script><script type="text/javascript" src="main.js"></script></body>
+</html>
