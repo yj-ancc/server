@@ -57,9 +57,6 @@ Alternatively, if you're not using Composer, copy the contents of the PHPMailer 
 
 ```php
 <?php    
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -88,9 +85,6 @@ While installing the entire package manually or with Composer is simple, conveni
 
 ```php
 <?php    
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 // Import PHPMailer classes into the global namespace
 // These must be at the top of your script, not inside a function

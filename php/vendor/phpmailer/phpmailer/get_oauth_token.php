@@ -1,7 +1,4 @@
 <?php    
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 /**
  * PHPMailer - PHP email creation and transport class.
@@ -57,9 +54,6 @@ if (!isset($_GET['code']) && !isset($_GET['provider'])) {
 </body>
 </html>
 <?php    
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 exit;
 }
