@@ -140,7 +140,11 @@ version 2:
 A simple example, that imports a single page and places this onto a new created page:
 
 ```php
-<?php
+<?php    
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
 use setasign\Fpdi\Fpdi;
 // or for usage with TCPDF:
 // use setasign\Fpdi\Tcpdf\Fpdi;
