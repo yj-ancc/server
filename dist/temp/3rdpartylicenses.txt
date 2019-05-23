@@ -417,9 +417,6 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-signature_pad
-MIT
-
 pdfjs-dist
 Apache-2.0
 
@@ -601,6 +598,9 @@ Apache-2.0
    END OF TERMS AND CONDITIONS
 
 
+signature_pad
+MIT
+
 punycode
 MIT
 Copyright Mathias Bynens <https://mathiasbynens.be/>
@@ -656,10 +656,10 @@ ngx-bootstrap/carousel
 ng2-pdf-viewer
 MIT
 
-ng2-image-compress
-
 ngx-webcam
 MIT
+
+ng2-image-compress
 
 rxjs-compat
 Apache-2.0
