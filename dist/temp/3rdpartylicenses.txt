@@ -651,6 +651,8 @@ ngx-bootstrap/collapse
 ngx-spinner
 MIT
 
+ngx-bootstrap/progressbar
+
 ngx-bootstrap/carousel
 
 ng2-pdf-viewer
@@ -905,8 +907,6 @@ ngx-bootstrap/datepicker
 MIT
 
 ngx-bootstrap/tabs
-
-ngx-bootstrap/progressbar
 
 ngx-bootstrap/buttons
 
