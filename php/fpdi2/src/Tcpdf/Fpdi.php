@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 
 namespace setasign\Fpdi\Tcpdf;
 

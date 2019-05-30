@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 // set the access control to the possible domain
 header('Access-Control-Allow-Origin:*');
 // Set the allow method

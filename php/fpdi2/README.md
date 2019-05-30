@@ -140,8 +140,7 @@ version 2:
 A simple example, that imports a single page and places this onto a new created page:
 
 ```php
-<?php    
-
+<?php
 use setasign\Fpdi\Fpdi;
 // or for usage with TCPDF:
 // use setasign\Fpdi\Tcpdf\Fpdi;

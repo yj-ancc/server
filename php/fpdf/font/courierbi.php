@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 $type = 'Core';
 $name = 'Courier-BoldOblique';
 $up = -100;

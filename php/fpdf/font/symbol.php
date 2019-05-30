@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 $type = 'Core';
 $name = 'Symbol';
 $up = -100;

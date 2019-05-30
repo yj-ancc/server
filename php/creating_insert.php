@@ -1,8 +1,7 @@
-<?php    
+<?php
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+//include_once 'customer_info.php';
+
 header('Content-Type', 'application/json');
 
 function query_information($con, $obj, $purpose, $table_name, $db_name) {

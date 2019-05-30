@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 $type = 'Core';
 $name = 'Helvetica-BoldOblique';
 $up = -100;

@@ -1,16 +1,12 @@
-<?php    
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-
-
+<?php
 // header('Content-Type', 'application/json');
 include_once 'login.php';
 include_once 'creating_insert.php';
 include_once 'setupvalues.php';
 include_once 'update.php';
 include_once 'names.php';
+
+
 
 $login_information =  "/login.json";
 class Customer {
@@ -202,7 +198,7 @@ if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
     /* Querying to do the creating and inserting informations into the table */
     if( $customer_information['edit'] ) {
        /* Update  query is triggered with edited functionalities */
-       if(($ref_num = update_information ($con, $customer_obj, '', 'customer_info'))) {
+       if(($ref_num = update_information($con, $customer_obj, '', 'customer_info'))) {
          // Valid pass
          $valid_update = 1;
        } else {

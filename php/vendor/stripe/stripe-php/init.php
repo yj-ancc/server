@@ -1,5 +1,4 @@
-<?php    
-
+<?php
 
 // Stripe singleton
 require(dirname(__FILE__) . '/lib/Stripe.php');
