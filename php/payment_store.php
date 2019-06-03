@@ -53,9 +53,11 @@ $gc = 0;
 $pc = 0;
 $ac = 0;
 
+
 /* Database connection and access information */
 $database_name = get_db_name();
 $login_information = '/'. get_login_file();
+$hard_copy = strval(check_hard($type_of_check));
 
 /* Establishing the database connection */
 if(($con = get_connection_db($login_information, $database_name))!= NULL ) {
@@ -95,8 +97,8 @@ if(($con = get_connection_db($login_information, $database_name))!= NULL ) {
               $main_success = 1;
               /* After the main payment table is created */
               /* Update the customer main table with the check type */
-              $str_val = 'SET type_of_check=? WHERE reference_num=? AND email=?';
-              $update_check_type = customer_update_information($con, get_main_customer_table_name(), $str_val, $type_of_check, $ref_num, $email);
+              $str_val = 'SET type_of_check=?, hard_copy_requested=? WHERE reference_num=? AND email=?';
+              $update_check_type = customer_update_information($con, get_main_customer_table_name(), $str_val, $type_of_check, $ref_num, $email, $hard_copy);
               if($update_check_type) {
                 $check_flag = 1;
               }
@@ -132,13 +134,12 @@ if(($con = get_connection_db($login_information, $database_name))!= NULL ) {
         /* Inserting element into the database */
         $data_main = array($ref_num, $email, $payment_method, $type_of_check, $payment_id, $cc, $pc, $gc, $ac, $total_paid);
         $payment_main = payment_insert($con, $table_name, $data_main);
-        echo json_encode($data_main);
         if(!$payment_main) {
           echo json_encode('ni-pay_main');
         } else {
             $main_success = 1;
-            $str_val = 'SET type_of_check=? WHERE reference_num=? AND email=?';
-            $update_check_type = customer_update_information($con, get_main_customer_table_name(), $str_val, $type_of_check, $ref_num, $email);
+            $str_val = 'SET type_of_check=?, hard_copy_requested=? WHERE reference_num=? AND email=?';
+            $update_check_type = customer_update_information($con, get_main_customer_table_name(), $str_val, $type_of_check, $ref_num, $email, $hard_copy);
             if($update_check_type) {
               $check_flag = 1;
             }

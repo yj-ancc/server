@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 use setasign\Fpdi\Fpdi;
 require_once('fpdf/fpdf.php');
 require_once('fpdi2/src/autoload.php');
@@ -51,10 +54,6 @@ $address_1_country = $request['addresses'][0]['country'];
 $address_1_date_from_day = $request['addresses'][0]['date_from_day'];
 $address_1_date_from_month = $request['addresses'][0]['date_from_month'];
 $address_1_date_from_year = $request['addresses'][0]['date_from_year'];
-
-
-
-
 
 
 

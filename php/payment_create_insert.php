@@ -1,5 +1,7 @@
 <?php
-
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 include 'normalised_create_insert.php';
 
 /* payment create and insert command : create and insert values into the payment table */
@@ -25,14 +27,25 @@ function payment_create($con, $data, $params, $types, $table_name, $primary_key,
   }
 }
 
+function check_hard($type) {
+  $type_list = explode("-", $type);
+  // format : i-pbvh-e
+  if (count($type_list) == 3) {
+    if (strpos($type_list[1], 'h') !== false) {
+        return 1;
+    }
+  }
+  return 0;
+}
 
-function customer_update_information($con, $table_name, $str_val, $val, $ref_num, $email) {
+function customer_update_information($con, $table_name, $str_val, $val, $ref_num, $email, $hard_copy) {
   $update_information = 'UPDATE '.$table_name.' '.$str_val;
   $update_information_cmd = $con->prepare($update_information);
   if($update_information_cmd != NULL) {
     /* update the page number bind params */
-    $update_information_cmd->bind_param('sss', $val_t, $ref_num_t, $email_t);
+    $update_information_cmd->bind_param('ssss', $val_t, $hard_copy_t, $ref_num_t, $email_t);
     $val_t = $val;
+    $hard_copy_t = $hard_copy;
     $ref_num_t = $ref_num;
     $email_t = $email;
   } else {

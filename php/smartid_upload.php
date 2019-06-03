@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 include 'login.php';
 include 'names.php';
 $login_information =  "/login.json";
@@ -20,11 +23,13 @@ function insert_smartid($con, $data, $login_information, $database_name){
     		$document_category = $smartid[$i]['document_category'];
 
         	if ($insert_prepare != '' && $insert_prepare->execute()) {
-            	echo json_encode("insert smartid table success");
+            	// echo json_encode("insert smartid table success");
             	$insert_prepare->close();
         	} else {
-            	echo json_encode("insert smartid table failed");
-            	if ($insert_prepare != '') $insert_prepare->close();
+            	// echo json_encode("insert smartid table failed");
+            	if ($insert_prepare != '') {
+                $insert_prepare->close();
+              }
             	return -1;
         	} 
     } 	
@@ -60,10 +65,10 @@ function insert_previous_name($con, $data, $login_information, $database_name){
               $num = $temp;
 
               if ($insert_prepare != '' && $insert_prepare->execute()) {
-                  echo json_encode("insert smartid table success");
+                  // echo json_encode("insert smartid table success");
                   $insert_prepare->close();
               } else {
-                echo json_encode("insert smartid table failed");
+                // echo json_encode("insert smartid table failed");
               if ($insert_prepare != '') $insert_prepare->close();
                   return -1;
               } 
@@ -84,10 +89,10 @@ function insert_previous_name($con, $data, $login_information, $database_name){
               $num = $temp;
 
               if ($insert_prepare != '' && $insert_prepare->execute()) {
-                  echo json_encode("insert smartid table success");
+                  // echo json_encode("insert smartid table success");
                   $insert_prepare->close();
               } else {
-                echo json_encode("insert smartid table failed");
+                // echo json_encode("insert smartid table failed");
               if ($insert_prepare != '') $insert_prepare->close();
                   return -1;
               } 
@@ -106,10 +111,10 @@ function insert_previous_name($con, $data, $login_information, $database_name){
               $value = $value;
 
               if ($insert_prepare != '' && $insert_prepare->execute()) {
-                  echo json_encode("insert smartid table success");
+                  // echo json_encode("insert smartid table success");
                   $insert_prepare->close();
               } else {
-                echo json_encode("insert smartid table failed");
+                // echo json_encode("insert smartid table failed");
               if ($insert_prepare != '') $insert_prepare->close();
                   return -1;
               } 
@@ -148,17 +153,17 @@ function insert_previous_name($con, $data, $login_information, $database_name){
 
 
             if ($insert_prepare != '' && $insert_prepare->execute()) {
-                echo json_encode("insert file table front page success");
+                // echo json_encode("insert file table front page success");
                 $insert_prepare->close();
             } else {
-                echo json_encode("insert file table front page failed");
+                // echo json_encode("insert file table front page failed");
                 if ($insert_prepare != '') $insert_prepare->close();
                 return -2;
             } 
               //save file to txt
     if (mkdir($path, 0777, true) ) {
 
-        $myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
+      $myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
       fwrite($myfile, $base64);
       fclose($myfile);
     } else {
@@ -166,13 +171,10 @@ function insert_previous_name($con, $data, $login_information, $database_name){
       fwrite($myfile, $base64);
       fclose($myfile);
       /* If the necessary file is not created */
-        echo json_encode('NC');
+        // echo json_encode('NC');
     }
-
-    }  
-
-    return 0;
-
+  }
+  return 0;
 }
 
 
@@ -180,10 +182,7 @@ function insert_document_details($con, $data,$login_information, $database_name)
 	$smartid = $data['smartid'];
 
 	for( $i = 0; $i< count($smartid); $i++ ) {
-
-		foreach($smartid[$i]['details'] as $key=>$value)
-		{
-
+		foreach($smartid[$i]['details'] as $key=>$value) {
     			$insert_prepare = $con->prepare("INSERT INTO smartid_document_details (document_id, title, value) VALUES (?,?,?)");
     			$insert_prepare->bind_param("sss",$document_id, $title, $value);
 
@@ -194,25 +193,21 @@ function insert_document_details($con, $data,$login_information, $database_name)
 
   			if ($insert_prepare != '' && $insert_prepare->execute()) {
     			$insert_prepare->close();
-    			echo json_encode('insert document_detail table success');
+    			// echo json_encode('insert document_detail table success');
   			} else  if ($insert_prepare != '') {
       			$insert_prepare->close();
-      			echo json_encode('insert document_detail table insert_prepare_null');
+      			// echo json_encode('insert document_detail table insert_prepare_null');
       			return -1;
   			} else {
-      			echo json_encode('insert document_detail table failed');
+      			// echo json_encode('insert document_detail table failed');
       			return -1;
   			}
-
 		}
-
-    }
-
-    return 0;
-
+  }
+  return 0;
 }
 
-function insert_document($con, $data,$login_information, $database_name){
+function insert_document($con, $data,$login_information, $database_name) {
 	$smartid = $data['smartid'];
 	for( $i = 0; $i< count($smartid); $i++ ) {
 
@@ -270,18 +265,16 @@ function insert_document($con, $data,$login_information, $database_name){
 
 			}
 
-			    if ($insert_prepare != '' && $insert_prepare->execute()) {
-            		echo json_encode("insert document table success");
-            		$insert_prepare->close();
-        		} else {
-            		echo json_encode("insert document table failed");
-            		$insert_prepare->close();
-            		if ($insert_prepare != '') $insert_prepare->close();
-            		return -1;
-        		} 
-
+      if ($insert_prepare != '' && $insert_prepare->execute()) {
+          // // echo json_encode("insert document table success");
+          $insert_prepare->close();
+      } else {
+          //echo json_encode("failed");
+          $insert_prepare->close();
+          if ($insert_prepare != '') $insert_prepare->close();
+          return -1;
+      }
 	}
-
 	return 0;
 
 }
@@ -306,34 +299,33 @@ function insert_file($con, $data,$login_information, $database_name){
     	$link = $path.'/'.$id.'.txt';
 
 
-    		    if ($insert_prepare != '' && $insert_prepare->execute()) {
-            		echo json_encode("insert file table front page success");
-            		$insert_prepare->close();
-        		} else {
-            		echo json_encode("insert file table front page failed");
-            		if ($insert_prepare != '') $insert_prepare->close();
-            		return -2;
-        		} 
+      if ($insert_prepare != '' && $insert_prepare->execute()) {
+          // // echo json_encode("insert file table front page success");
+          $insert_prepare->close();
+      } else {
+          // echo json_encode("insert file table front page failed");
+          if ($insert_prepare != '') $insert_prepare->close();
+          return -2;
+      }
             	//save file to txt
-		if (mkdir($path, 0777, true) ) {
-
-    		$myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
-			fwrite($myfile, $base64);
-			fclose($myfile);
-		} else {
-			$myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
-			fwrite($myfile, $base64);
-			fclose($myfile);
-    	/* If the necessary file is not created */
-    		echo json_encode('NC');
-		}
+		  if (mkdir($path, 0777, true) ) {
+        $myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
+			  fwrite($myfile, $base64);
+			  fclose($myfile);
+		  } else {
+			    $myfile = fopen($path.'/'.$id.'.txt', "w") or die("Unable to write file!");
+			    fwrite($myfile, $base64);
+			    fclose($myfile);
+    	    /* If the necessary file is not created */
+    		  // echo json_encode('NC');
+	  	}
 
 
 		$base64_b = $smartid[$i]['back']['data'];
 
     if($base64_b!=null && $base64_b!=''){
 
-          $insert_prepare = $con->prepare("INSERT INTO smartid_file (id, name, link, type) VALUES (?,?,?,?)");
+      $insert_prepare = $con->prepare("INSERT INTO smartid_file (id, name, link, type) VALUES (?,?,?,?)");
       $insert_prepare->bind_param("ssss",$id_b, $name_b, $link_b, $type_b);
 
       $smart_id = $data['reference_number'].'#'.$smartid[$i]['document_category'];
@@ -345,10 +337,10 @@ function insert_file($con, $data,$login_information, $database_name){
 
 
             if ($insert_prepare != '' && $insert_prepare->execute()) {
-                echo json_encode("insert file table back page success");
+                // // echo json_encode("success");
                 $insert_prepare->close();
             } else {
-                echo json_encode("insert file table back page success");
+                // // echo json_encode("success");
                 if ($insert_prepare != '') $insert_prepare->close();
                 return -1;
             } 
@@ -357,7 +349,7 @@ function insert_file($con, $data,$login_information, $database_name){
       //save file to txt
     if (mkdir($path, 0777, true) ) {
 
-        $myfile_b = fopen($path.'/'.$id_b.'.txt', "w") or die("Unable to write file!");
+       $myfile_b = fopen($path.'/'.$id_b.'.txt', "w") or die("Unable to write file!");
       fwrite($myfile_b, $base64_b);
       fclose($myfile_b);
     } else {
@@ -365,7 +357,7 @@ function insert_file($con, $data,$login_information, $database_name){
       fwrite($myfile_b, $base64_b);
       fclose($myfile_b);
       /* If the necessary file is not created */
-        echo json_encode('NC');
+      // echo json_encode('NC');
     }
 
     }
@@ -390,8 +382,6 @@ $request = json_decode($post_data, true);
 if($request != NULL){
 
    if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
-
-   		
     mysqli_autocommit($con,true);
 		$insertion_smartid = insert_smartid($con, $request,$login_information, $database_name);
    		if($insertion_smartid == 0){
@@ -409,6 +399,7 @@ if($request != NULL){
               if($insertion_previous_name == 0){
                 //mysqli_commit($con);
                 //mysqli_close($con);
+                echo json_encode('success');
               }
    					} else {
    
@@ -423,10 +414,6 @@ if($request != NULL){
    } else {
    	echo json_encode('connection failure');
    }
-	
-	
-	
-
 }
 
 

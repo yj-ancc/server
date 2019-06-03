@@ -1,13 +1,16 @@
 <?php
 
 //include_once 'customer_info.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 header('Content-Type', 'application/json');
 
 function query_information($con, $obj, $purpose, $table_name, $db_name) {
 
     $create_query = ' ';
-    $customer_info_param = "(reference_num VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255), email VARCHAR(255) NOT NULL, page_completed INT NOT NULL, phone_num VARCHAR(255), started_date VARCHAR(50), from_location VARCHAR(255), is_single_name VARCHAR(255), PRIMARY KEY (reference_num)) ";
+    $customer_info_param = "(reference_num VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255), email VARCHAR(255) NOT NULL, page_completed INT NOT NULL, phone_num VARCHAR(255), started_date DATETIME, from_location VARCHAR(255), is_single_name VARCHAR(255), PRIMARY KEY (reference_num)) ";
     $purp_of_check = "(reference_num VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, check_type VARCHAR(255) NOT NULL, apply_for_student INT, position_title_occupation VARCHAR(255) NOT NULL, proposed_place_of_work VARCHAR(255) NOT NULL, location_of_work VARCHAR(255), purpose_id VARCHAR(255) NOT NULL PRIMARY KEY, vul_ppl VARCHAR(255) NOT NULL,  FOREIGN KEY (reference_num) REFERENCES ".get_customer_table_name()."(reference_num)  ON UPDATE CASCADE )";
 
     if ($table_name == 'customer_info') {
@@ -41,7 +44,7 @@ function query_information($con, $obj, $purpose, $table_name, $db_name) {
             $email =  $obj->email;
             $page_completed = $obj->page_completed;
             $phone = $obj->phone;
-            $date = $obj->date_val;
+            $date = date("Y-m-d H:i:s");   //$obj->date_val;
             $from_location = $obj->from_location;
             $is_single_name = $obj->is_single_name;
 

@@ -1,6 +1,8 @@
 <?php
 header('Content-Type', 'application/json');
-
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 // Path name for the login file
 
 function get_connection_db($login_information, $database_name) {

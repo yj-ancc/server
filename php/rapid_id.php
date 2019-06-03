@@ -80,7 +80,7 @@ function curl($data, $url){
             
             // Submit the POST request
             $result = curl_exec($ch);
-            echo $result;
+            //echo $result;
             // Close cURL session handle
             curl_close($ch);
             return $result;
@@ -88,26 +88,27 @@ function curl($data, $url){
 
 
 function saveResponse($con, $result_new, $certificate_new, $field_details_new){
-    $insert_prepare = $con->prepare("INSERT INTO rapid_id (reference_number,document_link, document_type, submitted_date, result, doc_name, certificate, field_details) VALUES (?,?,?,?,?,?,?,?)");
+    $insert_prepare = $con->prepare("INSERT INTO rapid_id (reference_number, document_link, document_type, submitted_date, result, doc_name, certificate, field_details) VALUES (?,?,?,?,?,?,?,?)");
     $insert_prepare->bind_param("ssssssss", $reference_number, $document_link, $document_type , $submitted_date, $result,  $doc_name,   $certificate, $field_details);
 
 
     $reference_number = $GLOBALS['reference_number'];
     $document_link = $GLOBALS['document_link'];
     $document_type = $GLOBALS['document_type'];
-    $submitted_date = $GLOBALS['submitted_date'];
+    $submitted_date = date("Y-m-d H:i:s"); ;//$GLOBALS['submitted_date'];
     $result =  $result_new;
-    $doc_name = $GLOBALS['doc_name'];;
+    $doc_name = $GLOBALS['doc_name'];
     $certificate= $certificate_new;
     $field_details = $field_details_new;
 
     if ($insert_prepare != '' && $insert_prepare->execute()) {
-        echo json_encode("insert rapid id table success");
+        // echo json_encode("success");
         $insert_prepare->close();
+        return "success";
     } else {
-        echo json_encode("insert rapid id table failed");
+        // echo json_encode("failed");
         if ($insert_prepare != '') $insert_prepare->close();
-        return -1;
+        return "failed";
     } 
 }
 
@@ -117,37 +118,35 @@ function checkRefExist($con) {
         $sql = "SELECT `reference_number`, `result` FROM `rapid_id` where `reference_number` = '".$GLOBALS['reference_number']."' ";
         $result = $con->query($sql);
 
-
         if ($result->num_rows > 0) {
             // output data of each row
             while($row = $result->fetch_assoc()) {
                 //if reference num is already exist in database and the result is Y, no need to check it again
                 if($row["result"]=='Y'){
-                    return true;
+                    return "success";
                 } else {
                     //delete the current record
                     $sql = "DELETE FROM rapid_id WHERE reference_number='".$GLOBALS['reference_number']."' ";
 
                     if ($con->query($sql) === TRUE) {
-                        echo "Record deleted successfully";
+                        return "success";
                     } else {
-                        echo "Error deleting record: " . $conn->error;
+                        return "failed";
                     }
-                    return false;
+                    return "failed";
                 }
             }
         } else {
-                return false;
+                return "failed";
         }
-        return false;
-
+        return "failed";
 }
 
 
 if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
 
     //check if record already exist
-    if(checkRefExist($con) === false){
+    if(checkRefExist($con) === "failed"){
         $response = null;
         switch ($request['type']) {
             case "AustralianBirthCertificate":
@@ -206,25 +205,22 @@ if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
                  $response = curl( $data, 'https://'.$mode.'.ridx.io/dvs/immiCard');
                 break;
             default:
-                echo "No ID type match";
+                return "No ID match";
         }
 
-        // FIX this thing
-        if($response){
-
-                    $temp = json_decode($response, true);
-                    $result = $temp['VerifyDocumentResult']['VerificationResultCode'];
-                    $field_details = $temp['fieldDetails'];
-                    $certificate = $temp['pdfLink'];
-
-
-                    if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
-                        saveResponse( $con, $result, $field_details, $certificate);
-                    }
+        $temp = json_decode($response, true);
+        $response_status = $temp['result']['statuscode'];
+        // Fix this thing
+        if(!$response_status){
+          // after fetching a proper response
+          $result = $temp['VerifyDocumentResult']['VerificationResultCode'];
+          $field_details = json_encode($temp['fieldDetails']);
+          $certificate = $temp['pdfLink'];
+          if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
+            echo json_encode(saveResponse( $con, $result, $field_details, $certificate));
+          }
         }
-
     }
-    
 }
 
 /*

@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include 'names.php';
 
@@ -99,7 +102,7 @@ if( $request['type'] == 'invoice') {
   $code = $customer_information['code'];
   // TODO : change the body according to the design
   //$body = "Your verification code is  <b>".$code."</b>";
-  $body =  file_get_contents('../html/template_part1.html').$name.', <br><br> 
+  $body =  file_get_contents('html/template_part1.html').$name.', <br><br> 
 
 		
   The Verification Code to continue your background check application is  <b>'.$code.' 
@@ -109,7 +112,7 @@ if( $request['type'] == 'invoice') {
   You are only minutes away from lodging your application.
   Contact our friendly support staff during business hours if you require assistance.'
 
-  .file_get_contents('../html/template_part2.html');
+  .file_get_contents('html/template_part2.html');
 
   $subj = 'Verification Code';
 }

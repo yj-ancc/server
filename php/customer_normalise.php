@@ -1,5 +1,7 @@
 <?php
-
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 include 'login.php';
 include 'names.php';
 include 'normalised_create_insert.php';
@@ -18,7 +20,7 @@ $debug = 0;
 if ($debug) {
   $ref_num = '5c64e90c9ff57';
   $type_check = 'i-p-e';
-  $last_logged = '21/02/2019, 14:29:04';
+  $last_logged = '2019-02-20 14:29:04';
 } else {
   $ref_num = $request['ref_num'];
   $type_check = $request['type_of_check'];
@@ -78,6 +80,8 @@ if($con != NULL) {
           $page_completed = get_payment_page_number();
           $started_date = $row['started_date'];
           $from_location = $row['from_location'];
+          $application_status = '2';
+          $hard_copy_requested = '0';
           if( $last_name == '') {
             $is_single_name = '1';
           }
@@ -85,11 +89,11 @@ if($con != NULL) {
 
           $invoice = get_invoice_val();
           /* Creating the customer main table */
-          $data = array($ref_num, $email, $phone_num, $type_check, $page_completed, $started_date, '', $invoice);
-          $params = array ('reference_num', 'email', 'phone_num', 'type_of_check', 'page_completed', 'started_date', 'submitted_date', 'invoice_num');
+          $data = array($ref_num, $email, $phone_num, $type_check, $page_completed, $started_date, NULL, $invoice, $application_status, $hard_copy_requested);
+          $params = array ('reference_num', 'email', 'phone_num', 'type_of_check', 'page_completed', 'started_date', 'submitted_date', 'invoice_num', 'application_status', 'hard_copy_requested');
           $types = array( 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')',
-                          'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')',
-                          'VARCHAR('.$var_char_len.')', 'INT');
+                          'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'DATETIME',
+                          'DATETIME', 'INT', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')');
 
           $table_name = get_main_customer_table_name();
           $primary_key = 'PRIMARY KEY(reference_num, email)';
@@ -122,7 +126,7 @@ if($con != NULL) {
                   $flag = 1;
                 }
           } else {
-              /* customer_main table itself fails to create */
+              /* customer_main table failed to create */
               echo json_encode('ns:ns-main');
               $flag = 0;
               $con->close();

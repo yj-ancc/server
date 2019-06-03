@@ -1,0 +1,450 @@
+
+        <!-- Placing the logo in the top left corner of the introduction page -->
+<!--        <nav class="navbar navbar-expand-lg bg-light">
+          &lt;!&ndash; Links &ndash;&gt;
+          <div class="container">
+          <ul class=" navbar navbar-nav" >
+            <li class="nav-item">
+              <a class="navbar-brand" href="#">
+                <img src="./../../assets/images/ANCC.png">
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ">
+            <li class="nav-item ">
+              <a class="nav-link" (click) = "goto_faq()" > FAQ<span>s</span></a>
+            </li>
+            <li class="navbar-nav dropdown">
+
+              <div class="btn-group" dropdown>
+                <button id="button-basic" dropdownToggle type="button" class="btn btn-link  dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                  Other Checks <span class="caret"></span>
+                </button>
+                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                    role="menu" aria-labelledby="button-basic">
+                  <li role="menuitem"><a class="dropdown-item" href="#">National Police Checks</a></li>
+                  <li class="divider dropdown-divider"></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">Bankruptcy Checks</a></li>
+                  <li class="divider dropdown-divider"></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">Vevo Checks</a></li>
+
+                </ul>
+              </div>
+            </li>
+            <li class="navbar-nav dropdown">
+
+              <div class="btn-group" dropdown>
+                <button id="button-basic2" dropdownToggle type="button" class="btn btn-link dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                  About <span class="caret"></span>
+                </button>
+                <ul id="dropdown-basic2" *dropdownMenu class="dropdown-menu"
+                    role="menu" aria-labelledby="button-basic2">
+                  <li role="menuitem"><a class="dropdown-item" href="#">About us</a></li>
+                  <li class="divider dropdown-divider"></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">State Serviced</a></li>
+
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+
+            <li class="nav-item ">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+
+          </ul>
+          </div>
+        </nav>-->
+
+        <app-navbar></app-navbar>
+        <app-navbar2></app-navbar2>
+        <app-buttons1></app-buttons1>
+        <div class="home_banner" >
+          <img class="desktop_banner" src="./../../assets/images/home_banner.jpg" alt=""/>
+          <img class="mobile_banner" src="./../../assets/images/home_banner.jpg" alt=""/>
+
+        </div>
+
+        <section class="breadcrumb_sec">
+          <h2>Easy Check Process</h2>
+          <div class="container bread col-md-12 col-sm-12 col-xs-12">
+            <div class="breadcrumb" >
+              <a href="javascript:void(0);">&nbsp;&nbsp;Start check&nbsp;&nbsp;</a>
+              <a href="javascript:void(0);">&nbsp;&nbsp;Upload ID&nbsp;&nbsp;</a>
+              <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;&nbsp;Submit  &nbsp;&nbsp;&nbsp;&nbsp;</a>
+              <a href="javascript:void(0);">Track progress</a>
+              <a href="javascript:void(0);">Receive result</a>
+            </div>
+          </div>
+        </section>
+
+        <div class="desktop_midddle">
+          <section class="section WhyUseSection">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox1">
+                    <span class="imgIcon"> <img src="./../../assets/images/intel.jpg" alt="" /> </span>
+                    <p>Accredited by the Australian Criminal and Intelligence Commission</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click"  id="colbox1_link">Click for more information</a>-->
+                  </div>
+
+                  <div class="colBox-blue"id="colbluebox1">
+                    <p><img src="./../../assets/images/green-tick.png" alt=""/>Accredited to access the National Police Checking Service through the Australian Criminal and Intelligence Commission (ACIC).</p>
+                    <br><br>
+                    <p><img src="./../../assets/images/green-tick.png" alt=""/>Obtain a certified Nationally Coordinated Criminal History Check, which is commonly referred to as a police check.</p>
+
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox2">
+                    <span class="imgIcon"> <img src="./../../assets/images/business_days_img.jpg" alt="" /> </span>
+                    <p>Most police checks are back within one to three business days</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click"  id="colbox2_link">Click for more information</a>-->
+                  </div>
+                  <div class="colBox-blue" id="colbluebox2">
+                    <br/><br/><br/>
+                    <p>Our super fast 100% Online procedure means that majority of Police Checks are dispatched to applicants within one to three business days.</p>
+
+                    <p>
+                    <div class="head_green_btn"><a [routerLink]="['/police-check-start']"> Get started now </a>
+                    </div>
+
+
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox3">
+                    <span class="imgIcon"> <img src="./../../assets/images/territory_australia_img.jpg" alt="" /> </span>
+                    <p>Criminal history check available for every state and territory in Australia</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click" id="colbox3_link">Click for more information</a>-->
+                  </div>
+                  <div class="colBox-blue" id="colbluebox3">
+                    <p>Police Checks provided by Australian National Character Check are valid in:</p>
+                  <div *ngFor="let place of places">
+                    <a [routerLink]="['/state-service', place.place]" style="text-decoration: underline; font-size: 1.2em; margin-top: 10px;margin-left:10px">• {{place.place}}</a> <br><br>
+
+                </div>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox4">
+                    <span class="imgIcon"> <img src="./../../assets/images/online_application_img.jpg" alt="" /> </span>
+                    <p>100% online application and highly secured encryption</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click"  id="colbox4_link">Click for more information</a>-->
+                  </div>
+                  <div class="colBox-blue" id="colbluebox4">
+                    <p><img src="./../../assets/images/green-tick.png" alt=""/>Australian National Character Check has brought an innovative change to the Police Check industry by allowing customers to complete their Check, and verify their identity completely online!
+                    </p>
+                    <br/><br/><br/>
+                    <p>
+                      <img src="./../../assets/images/green-tick.png" alt=""/>Our website incorporates the use of Secure Sockets Layer (SSL) which is encryption technology also used by banks for online security. <a (click)="openModal(termsConditionsModel)" style="font-weight: bold; text-decoration: underline; cursor: pointer;">More info</a>
+
+
+                    </p>
+
+
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox5">
+                    <span class="imgIcon"> <img src="./../..//assets/images/computer_mobile_img.jpg" alt="" /> </span>
+                    <p>Apply for a check anywhere using your computer or mobile device</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click"  id="colbox5_link">Click for more information</a>-->
+                  </div>
+
+                  <div class="colBox-blue" id="colbluebox5">
+                    <p><img src="./../../assets/images/green-tick.png" alt=""/> Police Checks can be completed on a computer or mobile device.
+
+                    </p>
+                    <br/><br/>
+                    <p>
+                      <img src="./../../assets/images/green-tick.png" alt=""/> You can apply in the comfort of your home, at work, or on-the-go.
+                    </p>
+                    <br/><br/>
+                    <p>
+                      <img src="./../../assets/images/green-tick.png" alt=""/>Payment options include Credit Card, Debit Card, PayPal, Apple Pay or Android Pay.
+
+
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div class="colBox" id="colbox6">
+                    <span class="imgIcon"> <img src="./../../assets/images/bankruptcy_checks_img.jpg" alt="" /> </span>
+                    <p>Accredited provider of Police Checks, Bankruptcy Checks and VEVO Checks</p>
+                    <!--<a href="javascript:void(0);" class="home_mob_click"  id="colbox6_link">Click for more information</a>-->
+                  </div>
+
+                  <div class="colBox-blue" id="colbluebox6">
+                    <p><img src="./../../assets/images/green-tick.png" alt=""/> <strong><a href="#">Police Check</a></strong> - A collation of police and conviction history information about an individual.
+
+                    </p>
+                    <br/><br/>
+                    <p>
+                      <img src="./../../assets/images/green-tick.png" alt=""/> <strong><a href="#">Bankruptcy Check</a></strong> - your personal insolvency information directly from the National Personal Insolvency Index(NPII).
+                    </p>
+                    <br/><br/>
+                    <p>
+                      <img src="./../../assets/images/green-tick.png" alt=""/><strong><a href="#">VEVO (Right to Work)</a></strong> Check visa details and conditions regarding an individual’s working rights.
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+        <!--
+        <div class="header-down-menu-wrap">
+          <div class="header-down-menu">
+            <div class="container">
+              <div class="header-down-menu-nav">
+                <ul>
+                  <li><a href="#">Start a new check</a></li>
+                  <li><a href="#">Resume a check</a></li>
+                  <li><a href="#">Track a check</a></li>
+                  <li><a href="#">Verify a check</a></li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="home_green_btn">
+            <div class="head_green_btn"><a (click)="goto_new_check()">Start a new national police check</a></div>
+            <div class="head_green_btn"><a href="#">Start a new bankruptcy check</a></div>
+            <div class="head_green_btn"><a href="#">Start a new VEVO check</a></div>
+          </div>
+        </div>
+-->
+
+
+
+
+
+
+
+
+        <div class="mobile_midddle">
+          <section class="section WhyUseSection">
+            <div class="container col-md-12 col-sm-12 col-xs-12" >
+              <div class="row">
+
+            <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+              <div [hidden]="showfirst">
+            <div class="colBox" id="colbox11">
+              <div id="old">
+                <span class="imgIcon" > <img src="./../../assets/images/intel.jpg" alt="" id="colbox11img" /> </span>
+                <div id="colbox11word" class="firstpageword">
+                  <p id="colbox11word2">Accredited by the Australian Criminal and Intelligence Commission </p>
+                </div>
+              </div>
+              <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                      (click)="changeImage()"  >Click for more information</button>
+            </div>
+          </div>
+          <div [hidden]="!showfirst">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new">
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Accredited to access the National Police Checking Service through the Australian Criminal and Intelligence Commission (ACIC).</p>
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Obtain a certified Nationally Coordinated Criminal History Check, which is commonly referred to as a police check.</p>
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage()" >Click for less information</button>
+                    </div>
+                  </div>
+          </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div [hidden]="showSecond">
+                    <div class="colBox" id="colbox11">
+                      <div id="old">
+                        <span class="imgIcon" > <img src="./../../assets/images/business_days_img.jpg" alt="" id="colbox11img" /> </span>
+                        <div id="colbox11word" class="firstpageword">
+                          <p id="colbox11word2">Most police checks are back within one to three business days </p>
+                        </div>
+                      </div>
+                      <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage2()" >Click for more information</button>
+                    </div>
+                  </div>
+                  <div [hidden]="!showSecond">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new">
+                        <p>Our super fast 100% Online procedure means that majority of Police Checks are dispatched to applicants within one to three business days.</p>
+                        <br>
+                        <br>
+                        <div class="head_green_btn"><a href="#" > Get started now </a></div>
+                        <!--<p><img src="./../../assets/images/green-tick.png" alt=""/>Obtain a certified Nationally Coordinated Criminal History Check, which is commonly referred to as a police check.</p>-->
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage2()" >Click for less information</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div [hidden]="showThird">
+                    <div class="colBox" id="colbox11">
+                      <div id="old">
+                        <span class="imgIcon" > <img src="./../../assets/images/territory_australia_img.jpg" alt="" id="colbox11img" /> </span>
+                        <div id="colbox11word" class="firstpageword">
+                          <p id="colbox11word2">Criminal history check available for every state and territory in Australia </p>
+                        </div>
+                      </div>
+                      <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage3()" >Click for more information</button>
+                    </div>
+                  </div>
+                  <div [hidden]="!showThird">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new" class="listwords">
+                        <p>Police Checks provided by Australian National Character Check are valid in:</p>
+                        <ul>
+                          <li><a href="#">Australian Capital Territory (ACT)</a></li>
+                          <li ><a href="#"  >New South Wales (NSW)</a></li>
+                          <li ><a href="#"  >Queensland (QLD)</a></li>
+                          <li ><a href="#" >Victoria (VIC)</a></li>
+                          <li><a href="#" >Tasmania (TAS)</a></li>
+                          <li ><a href="#" >Northern Territory (NT)</a></li>
+                          <li ><a href="#"  >South Australia (SA)</a></li>
+                          <li ><a href="#"  >Western Australia (WA)</a></li>
+                        </ul>
+                        <!--<p><img src="./../../assets/images/green-tick.png" alt=""/>Obtain a certified Nationally Coordinated Criminal History Check, which is commonly referred to as a police check.</p>-->
+
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage3()">Click for less information</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div [hidden]="showForth">
+                    <div class="colBox" id="colbox11">
+                      <div id="old">
+                        <span class="imgIcon" > <img src="./../../assets/images/online_application_img.jpg" alt="" id="colbox11img" /> </span>
+                        <div id="colbox11word" class="firstpageword">
+                          <p id="colbox11word2">100% online application and highly secured encryption</p>
+                        </div>
+                      </div>
+                      <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage4()" >Click for more information</button>
+                    </div>
+                  </div>
+                  <div [hidden]="!showForth">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new">
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Australian National Character Check has brought an innovative change to the Police Check industry by allowing customers to complete their Check, and verify their identity completely online!</p>
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Our website incorporates the use of Secure Sockets Layer (SSL) which is encryption technology also used by banks for online security. More info</p>
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage4()">Click for less information</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div [hidden]="showFifth">
+                    <div class="colBox" id="colbox11">
+                      <div id="old">
+                        <span class="imgIcon" > <img src="./../../assets/images/computer_mobile_img.jpg" alt="" id="colbox11img" /> </span>
+                        <div id="colbox11word" class="firstpageword">
+                          <p id="colbox11word2">Apply for a check anywhere using your computer or mobile device</p>
+                        </div>
+                      </div>
+                      <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage5()" >Click for more information</button>
+                    </div>
+                  </div>
+                  <div [hidden]="!showFifth">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new">
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Police Checks can be completed on a computer or mobile device.</p>
+
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>You can apply in the comfort of your home, at work, or on-the-go.</p>
+
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/>Payment options include Credit Card, Debit Card, PayPal, Apple Pay or Android Pay.</p>
+
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage5()">Click for less information</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 colBoxmain">
+                  <div [hidden]="showSisth">
+                    <div class="colBox" id="colbox11">
+                      <div id="old">
+                        <span class="imgIcon" > <img src="./../../assets/images/bankruptcy_checks_img.jpg" alt="" id="colbox11img" /> </span>
+                        <div id="colbox11word" class="firstpageword">
+                          <p id="colbox11word2">Accredited provider of Police Checks, Bankruptcy Checks and VEVO Checks</p>
+                        </div>
+                      </div>
+                      <button id="more_less"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage6()" >Click for more information</button>
+                    </div>
+                  </div>
+                  <div [hidden]="!showSisth">
+
+                    <div class="colBox" id="colbox11-1" style="background: #0072b8">
+                      <div id="new">
+                        <p><img src="./../../assets/images/green-tick.png" alt=""/> <strong><a href="#">Police Check</a></strong> - a collation of police and conviction history information about an individual.
+
+                        </p>
+                        <p>
+                          <img src="./../../assets/images/green-tick.png" alt=""/> <strong><a href="#">Bankruptcy Check</a></strong> - your personal insolvency information directly from the National Personal Insolvency Index(NPII).
+                        </p>
+                        <p>
+                          <img src="./../../assets/images/green-tick.png" alt=""/><strong><a href="#">VEVO (Right to Work)</a></strong> - Check visa details and conditions regarding an individual’s working rights.
+
+                        </p>
+                      </div>
+                      <button id="more_less2_1"  class="btn btn-link more_less collapsed " data-toggle="collapse"
+                              (click)="changeImage6()" >Click for less information</button>
+                    </div>
+                  </div>
+                </div>
+
+
+        </div>
+            </div>
+          </section>
+        </div>
+
+
+
+
+
+<app-buttons1></app-buttons1>
+    <app-footer></app-footer>
+
+
+    <ng-template #termsConditionsModel>
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <app-term-condition></app-term-condition>
+        <br>
+        <div style="margin: auto; width: 100%; text-align: center;">
+            <button (click)="modalRef.hide()" id="save_but" value = "save" style="margin: 12px auto auto;height: 50px; width: 150px; font-size: 1.5em;" type="button" class="btn btn-primary"> Close</button>
+        </div>
+        <br>
+      </ng-template>

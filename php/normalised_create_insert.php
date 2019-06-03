@@ -1,5 +1,7 @@
 <?php
-
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 function check_attributes( $data, $params, $types, $comma, $primary_key, $foreign_key, $only_create) {
     /* Checking if the data and params are matching */
     $combined_param = '';
@@ -58,8 +60,8 @@ function create_insert_table($con, $data, $params, $table_name, $types, $primary
     if($con->query($create_query) == TRUE ) {
       /* create query for creating the database and insert the values into the tables created */
       if ($table_name == get_main_customer_table_name()) {
-        $insert_prepare = $con->prepare ('INSERT INTO'.' '. get_main_customer_table_name().' (reference_num, email, phone_num, type_of_check, page_completed, started_date, submitted_date, invoice_num) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)');
-        $insert_prepare->bind_param("sssssssi", $ref_num, $email, $phone, $type, $page_completed, $date, $submitted_date, $invoice_val );
+        $insert_prepare = $con->prepare ('INSERT INTO'.' '. get_main_customer_table_name().' (reference_num, email, phone_num, type_of_check, page_completed, started_date, submitted_date, invoice_num, application_status, hard_copy_requested) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $insert_prepare->bind_param("sssssssiss", $ref_num, $email, $phone, $type, $page_completed, $date, $submitted_date, $invoice_val, $application_status_val, $hard_copy_requested_val );
         // $data = array($ref_num, $email, $phone_num, $type_check, $page_completed, $started_date);
         $ref_num = $data[0];
         $email = $data[1];
@@ -69,6 +71,8 @@ function create_insert_table($con, $data, $params, $table_name, $types, $primary
         $date = $data[5];
         $submitted_date = $data[6];
         $invoice_val = $invoice;
+        $application_status_val = $data[8];
+        $hard_copy_requested_val = $data[9];
       } else if ($table_name == get_sec_customer_table_name()) {
           $insert_prepare = $con->prepare ('INSERT INTO '.$table_name.' (reference_num, first_name, middle_name, last_name, email, is_single_name, last_logged, from_location, dob, gender, state_born, country_born, is_prev_name) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
           $insert_prepare->bind_param("sssssssssssss", $ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, $dob, $gender, $state, $country, $prev_name );
