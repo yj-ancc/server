@@ -7,20 +7,22 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 function get_connection_db($login_information, $database_name) {
 
-
-    //$login_information = json_decode($login_information, true);
-
-    if(file_exists('./../../../'.$login_information) == FALSE) {
+    //file_exists('./../../../'.$login_information) == FALSE
+    if(file_exists('/'.$login_information) == FALSE) {
         echo json_encode(file_get_contents($login_information));
         return NULL;
     }
-    $login_information = file_get_contents('./../../../'.$login_information);
+    //$login_information = file_get_contents('./../../../'.$login_information);
+    $login_information = file_get_contents('.'.$login_information);
 
     $request = json_decode($login_information, true);
     $user_name = $request['db']['name'];
     $password = $request['db']['password'];
 
-    $url = 'localhost';
+
+
+    //$url = 'localhost';
+    $url = '172.31.39.141';
 
     /* Manually create the customer database and start populating things */
     /* Manually create a login.json file with <username>;<password> */

@@ -2,6 +2,20 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+header('Content-Type', 'application/json');
+
+function check_table_exists($con, $table_name) {
+  // check table existence
+  $check_cmd = 'select * from  `'.$table_name.'` LIMIT 1';
+  $table_exist = $con->query($check_cmd);
+  if ($table_exist == TRUE) {
+    return 1;
+  } else {
+      return 0;
+  }
+}
+
+
 function check_attributes( $data, $params, $types, $comma, $primary_key, $foreign_key, $only_create) {
     /* Checking if the data and params are matching */
     $combined_param = '';
@@ -26,6 +40,46 @@ function check_attributes( $data, $params, $types, $comma, $primary_key, $foreig
     } else {
         return '';
     }
+}
+
+
+
+function insert_values($con, $table_name, $reference_num) {
+
+  $insert_prepare = '';
+  if ($table_name == get_application_date_table()) {
+    $insert_prepare = $con->prepare ('INSERT INTO'.' '. $table_name.' (reference_num, date_upload_to_nss, date_closed_to_nss, date_closed_to_ancc, date_dispute_upload_to_nss, date_dispute_lodge, date_disposed) VALUES ( ?, ?, ?, ?, ?, ?, ?)');
+    if($insert_prepare != NULL) {
+      $insert_prepare->bind_param("sssssss", $ref_num, $date_upload_to_nss, $date_closed_to_nss, $date_closed_to_ancc, $date_dispute_upload_to_nss, $date_dispute_lodge, $date_disposed);
+      $ref_num = $reference_num;
+      $date_upload_to_nss = NULL;
+      $date_closed_to_nss = NULL;
+      $date_closed_to_ancc = NULL;
+      $date_dispute_upload_to_nss = NULL;
+      $date_dispute_lodge = NULL;
+      $date_disposed = NULL;
+    } else {
+        return -1;
+    }
+  } else if($table_name == get_rfi_table()) {
+        $insert_prepare = $con->prepare ('INSERT INTO'.' '. $table_name.' (reference_num) VALUES ( ?)');
+        if($insert_prepare != NULL) {
+          $insert_prepare->bind_param("s", $ref_num);
+          $ref_num = $reference_num;
+        } else {
+            return -1;
+        }
+  }
+
+  if ($insert_prepare != '' && $insert_prepare->execute()) {
+    $insert_prepare->close();
+    return 1;
+  } else {
+      if ($insert_prepare != '') {
+        $insert_prepare->close();
+      }
+      return -1;
+  }
 }
 
 function create_insert_table($con, $data, $params, $table_name, $types, $primary_key, $foreign_key, $invoice) {
@@ -74,8 +128,8 @@ function create_insert_table($con, $data, $params, $table_name, $types, $primary
         $application_status_val = $data[8];
         $hard_copy_requested_val = $data[9];
       } else if ($table_name == get_sec_customer_table_name()) {
-          $insert_prepare = $con->prepare ('INSERT INTO '.$table_name.' (reference_num, first_name, middle_name, last_name, email, is_single_name, last_logged, from_location, dob, gender, state_born, country_born, is_prev_name) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-          $insert_prepare->bind_param("sssssssssssss", $ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, $dob, $gender, $state, $country, $prev_name );
+          $insert_prepare = $con->prepare ('INSERT INTO '.$table_name.' (reference_num, first_name, middle_name, last_name, email, is_single_name, last_logged, from_location, dob, gender, state_born, suburb_born, country_born, is_prev_name) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+          $insert_prepare->bind_param("ssssssssssssss", $ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, $dob, $gender, $state, $suburb, $country, $prev_name );
           //  $data = array($ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, '', '', '', '');
           $ref_num = $data[0];
           $first_name =   $data[1];
@@ -88,8 +142,9 @@ function create_insert_table($con, $data, $params, $table_name, $types, $primary
           $dob = $data[8];
           $gender = $data[9];
           $state = $data[10];
-          $country = $data[11];
-          $prev_name = $data[12];
+          $suburb = $data[11];
+          $country = $data[12];
+          $prev_name = $data[13];
       }
     } else {
       echo json_encode('creation failure inside the normalised create insert.php');

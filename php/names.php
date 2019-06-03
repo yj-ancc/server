@@ -129,12 +129,20 @@ function get_abn() {
   return '95 610 943 934';
 }
 
+function get_rfi_table() {
+  return 'Flagg_and_rfi';
+}
+
+function get_application_date_table() {
+  return 'application_dates';
+}
+
 function get_font_type() {
   return 'Arial';
 }
 
 function get_invoice_file_path() {
-  return './../../../data';
+  return get_repo_path().'/data';
 }
 
 function get_invoice_name() {
@@ -142,11 +150,15 @@ function get_invoice_name() {
 }
 
 function get_form_file_path() {
-  return './../../../form';
+  return get_repo_path().'/form';
 }
 
 function get_police_check_form_name() {
   return 'police_check_form.pdf';
+}
+
+function consent_table() {
+  return 'customer_consent';
 }
 
 function get_user_name() {
@@ -154,7 +166,8 @@ function get_user_name() {
 }
 
 function get_repo_path() {
-  return '/home/'.get_user_name().'/ancc/ancc_individual/ancc';
+  return '/home/ubuntu'
+  //return '/home/'.get_user_name().'/ancc/ancc_individual/ancc';
 }
 
 function get_data_path() {
@@ -164,5 +177,6 @@ function get_data_path() {
 function get_form_path() {
   return get_repo_path().'/form';
 }
+
 
 ?>

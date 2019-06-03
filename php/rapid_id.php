@@ -6,8 +6,12 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'login.php';
 include_once 'names.php';
-$login_information =  "/login.json";
-$database_name = "ancc";
+// Login credentials are present in the login.json file
+$login_information =  "/".get_login_file();
+// database named retrieved
+
+$database_name = get_db_name();
+
 //live key:
 //9dc0ac04c1e25a69a11bd12b04dcafafcae6d468fcb1ab0a57746fc544e4ef1f
 
@@ -40,7 +44,7 @@ example return result from rapid ID
 
 */
 
-$mode = 'sandbox';//for testing
+$mode = 'sandbox'; //for testing
 // $mode = 'live' // for live
 
 
@@ -48,9 +52,6 @@ $post_data = file_get_contents("php://input");
 
 /* Decoding the json data to retrieve based on objects */
 $request = json_decode($post_data, true);
-
-//echo json_encode($request);
-
 
 $reference_number = $request['reference_number'];
 $document_link = $request['document_link'];
@@ -60,46 +61,43 @@ $doc_name = $request['doc_name'];
  
 
 function curl($data, $url){
-     
-            $payload = json_encode($data);
-            $request_headers = array(
-                'token: 828bc700f61718c2f5e7178ef4cf15722cf965b77653b9accd8adda1e5663f26',
-                'Content-Type: application/json',
-            );
-            
-            // Prepare new cURL resource
-            $ch = curl_init(); 
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            // Set HTTP Header for POST request 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers );
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-            
-            // Submit the POST request
-            $result = curl_exec($ch);
-            //echo $result;
-            // Close cURL session handle
-            curl_close($ch);
-            return $result;
+  $payload = json_encode($data);
+  $request_headers = array(
+      'token: 828bc700f61718c2f5e7178ef4cf15722cf965b77653b9accd8adda1e5663f26',
+      'Content-Type: application/json',
+  );
+
+  // Prepare new cURL resource
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+  // Set HTTP Header for POST request
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers );
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+  // Submit the POST request
+  $result = curl_exec($ch);
+  //echo $result;
+  // Close cURL session handle
+  curl_close($ch);
+  return $result;
 }
 
 
-function saveResponse($con, $result_new, $certificate_new, $field_details_new){
+function saveResponse($con, $reference_number, $document_link, $document_type, $doc_name, $result_new, $field_details_new, $certificate_new){
     $insert_prepare = $con->prepare("INSERT INTO rapid_id (reference_number, document_link, document_type, submitted_date, result, doc_name, certificate, field_details) VALUES (?,?,?,?,?,?,?,?)");
-    $insert_prepare->bind_param("ssssssss", $reference_number, $document_link, $document_type , $submitted_date, $result,  $doc_name,   $certificate, $field_details);
-
-
-    $reference_number = $GLOBALS['reference_number'];
-    $document_link = $GLOBALS['document_link'];
-    $document_type = $GLOBALS['document_type'];
-    $submitted_date = date("Y-m-d H:i:s"); ;//$GLOBALS['submitted_date'];
-    $result =  $result_new;
-    $doc_name = $GLOBALS['doc_name'];
-    $certificate= $certificate_new;
-    $field_details = $field_details_new;
+    $insert_prepare->bind_param("ssssssss", $reference_number_t, $document_link_t, $document_type_t, $submitted_date_t, $result_t, $doc_name_t, $certificate_t, $field_details_t);
+    $reference_number_t = $reference_number;
+    $document_link_t = $document_link;
+    $document_type_t = $document_type;
+    $submitted_date_t = date("Y-m-d H:i:s");
+    $result_t =  $result_new;
+    $doc_name_t = $doc_name;
+    $certificate_t = $certificate_new;
+    $field_details_t = $field_details_new;
 
     if ($insert_prepare != '' && $insert_prepare->execute()) {
         // echo json_encode("success");
@@ -113,40 +111,47 @@ function saveResponse($con, $result_new, $certificate_new, $field_details_new){
 }
 
 
-function checkRefExist($con) {
+function checkRefExist($con, $reference_number) {
 
-        $sql = "SELECT `reference_number`, `result` FROM `rapid_id` where `reference_number` = '".$GLOBALS['reference_number']."' ";
+        $sql = "SELECT reference_number, result FROM rapid_id where reference_number='".$reference_number."'";
         $result = $con->query($sql);
 
         if ($result->num_rows > 0) {
             // output data of each row
-            while($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
                 //if reference num is already exist in database and the result is Y, no need to check it again
-                if($row["result"]=='Y'){
+                if ($row["result"]=='Y') {
                     return "success";
                 } else {
                     //delete the current record
-                    $sql = "DELETE FROM rapid_id WHERE reference_number='".$GLOBALS['reference_number']."' ";
+                    $sql = "DELETE FROM rapid_id WHERE reference_number='".$reference_number."'";
 
                     if ($con->query($sql) === TRUE) {
                         return "success";
                     } else {
-                        return "failed";
+                        return "cns";
                     }
                     return "failed";
                 }
             }
         } else {
-                return "failed";
+            return "failed";
         }
         return "failed";
 }
 
 
+/*
+ * Establishing the DB connection
+ *
+ *
+ */
+
+
 if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
 
     //check if record already exist
-    if(checkRefExist($con) === "failed"){
+    if(checkRefExist($con, $reference_number) === "failed"){
         $response = null;
         switch ($request['type']) {
             case "AustralianBirthCertificate":
@@ -210,14 +215,14 @@ if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
 
         $temp = json_decode($response, true);
         $response_status = $temp['result']['statuscode'];
-        // Fix this thing
-        if(!$response_status){
-          // after fetching a proper response
+        // check for the response status.
+        // response status would come in only for the case of not acceptable requests.
+        if($response_status == '' || $response_status == NULL){
           $result = $temp['VerifyDocumentResult']['VerificationResultCode'];
           $field_details = json_encode($temp['fieldDetails']);
           $certificate = $temp['pdfLink'];
-          if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
-            echo json_encode(saveResponse( $con, $result, $field_details, $certificate));
+          if(($con = get_connection_db($login_information, $database_name)) != NULL) {
+            echo json_encode(saveResponse( $con, $reference_number, $document_link, $document_type, $doc_name, $result, $field_details, $certificate));
           }
         }
     }

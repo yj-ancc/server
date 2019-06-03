@@ -1,4 +1,6 @@
 <?php
+header('Content-Type', 'application/json');
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
@@ -18,7 +20,7 @@ $debug = 0;
 
 
 if ($debug) {
-  $ref_num = '5c64e90c9ff57';
+  $ref_num = 'P5cf21228ae7a3';
   $type_check = 'i-p-e';
   $last_logged = '2019-02-20 14:29:04';
 } else {
@@ -104,11 +106,12 @@ if($con != NULL) {
              /* creation of table and updation into the tables is success */
 
              /* Creating the customer secondary main table */
-             $data = array($ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, '', '', '', '', $is_prev_name);
-             $params = array ('reference_num', 'first_name', 'middle_name', 'last_name', 'email', 'is_single_name', 'last_logged', 'from_location', 'dob', 'gender', 'state_born', 'country_born', 'is_prev_name');
+             $data = array($ref_num, $first_name, $middle_name, $last_name, $email, $is_single_name, $last_logged, $from_location, '', '', '', '', '', $is_prev_name);
+             $params = array ('reference_num', 'first_name', 'middle_name', 'last_name', 'email', 'is_single_name', 'last_logged', 'from_location', 'dob', 'gender', 'state_born', 'suburb_born', 'country_born', 'is_prev_name');
              $types = array( 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')',
                              'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')',
-                             'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')','VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')' );
+                             'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')','VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')',
+                             'VARCHAR('.$var_char_len.')', 'VARCHAR('.$var_char_len.')' );
              $primary_key = 'PRIMARY KEY(reference_num, email)';
              $foreign_key = 'FOREIGN KEY(reference_num, email) REFERENCES '.get_main_customer_table_name().'(reference_num, email) ON UPDATE CASCADE';
              $table_name = get_sec_customer_table_name();
@@ -117,8 +120,33 @@ if($con != NULL) {
              $create = create_insert_table($con, $data, $params, $table_name, $types, $primary_key, $foreign_key, $create);
              // echo json_encode($create);
              if($create > 0) {
-             /* creation of table and updation into the tables is success */
-                echo json_encode('success:'.''.$create);
+                // check for rfi and application table existence and insert values
+                if (check_table_exists($con, get_rfi_table())) {
+                  // check for the application table and insert values accordingly
+                  if(check_table_exists($con, get_application_date_table())) {
+                    // inserting values into the application_dates table
+                    $insert_command = insert_values($con, get_application_date_table(), $ref_num);
+                    // insert command succeeds
+                    if($insert_command == 1) {
+                      // inserting into the rfi table
+                      $insert_command = insert_values($con, get_rfi_table(), $ref_num);
+                      if ($insert_command == 1) {
+                       echo json_encode('success:'.''.$create);
+                      } else {
+                          echo json_encode('insert failed in rfi table');
+                      }
+                    } else {
+                        echo json_encode('insert failed in application_dates');
+                    }
+                    // echo json_encode('success:'.''.$create);
+                  } else {
+                      echo json_encode('application table missing');
+                      return;
+                  }
+                } else {
+                    echo json_encode('Rfi table missing');
+                    return;
+                }
                 $con->close();
 
               } else {

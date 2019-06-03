@@ -27,7 +27,7 @@ function query_information($con, $obj, $purpose, $table_name, $db_name) {
     $insert_query = '';
     $insert_prepare = '';
 
-    if($con->query($create_query) == TRUE){
+    if($con->query($create_query) == TRUE) {
 
         if ( $table_name == 'customer_info' ) {
 

@@ -1,5 +1,5 @@
 <?php
-// header('Content-Type', 'application/json');
+header('Content-Type', 'application/json');
 include_once 'login.php';
 include_once 'creating_insert.php';
 include_once 'setupvalues.php';
@@ -24,7 +24,7 @@ include_once 'names.php';
             header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-            header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
         exit(0);
     }
@@ -62,7 +62,7 @@ class Customer {
         $this->page_completed = $page_completed;
         $this->date_val  = $date_val;
         if(!$this->edit) {
-         $this->ref_no = uniqid();
+         $this->ref_no = 'P'.uniqid();
         }
         else {
           $this->ref_no = $ref_no;

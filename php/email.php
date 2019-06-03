@@ -45,7 +45,7 @@ function email_sending($from_user, $from_pass, $to_address, $to_address_name, $r
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = $subj;
     $mail->Body    = $body;
-    $mail->AddEmbeddedImage('../../assets/images/logo/ancc_logo.png', 'logo', 'logo.png');
+    //$mail->AddEmbeddedImage('../../assets/images/logo/ancc_logo.png', 'logo', 'logo.png');
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     $mail_send = $mail->send();
     
@@ -92,7 +92,9 @@ if( $request['type'] == 'invoice') {
   $email = $request['email'];
   $name = $request['name'];
   $data_path = get_data_path().'/'.$ref_num.'/'.$type.'.pdf';
-  $body = 'Attaching pdf from .. ';
+  $body =  file_get_contents('html/template_part1.html').$name.', <br><br> '
+  .'Thanks for choosing Australian National Character Check. <br> Please see attached invoice. <br>'
+  .file_get_contents('html/template_part2.html');
   $subj = 'Ancc - Invoice';
 
 } else {

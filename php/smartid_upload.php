@@ -11,37 +11,28 @@ $database_name = "ancc";
 function insert_smartid($con, $data, $login_information, $database_name){
 
 	$smartid = $data['smartid'];
-    for( $i = 0; $i< count($smartid); $i++ ) {
+  for( $i = 0; $i< count($smartid); $i++ ) {
 
-    		$insert_prepare = $con->prepare("INSERT INTO smartid (smart_id, reference_number, email, upload_method, document_category) VALUES (?,?,?,?,?)");
-    		$insert_prepare->bind_param("sssss", $smart_id, $reference_number, $email, $upload_method, $document_category);
+    $insert_prepare = $con->prepare("INSERT INTO smartid (smart_id, reference_number, email, upload_method, document_category) VALUES (?,?,?,?,?)");
+    $insert_prepare->bind_param("sssss", $smart_id, $reference_number, $email, $upload_method, $document_category);
 
-    		$smart_id = $data['reference_number'].'#'.$smartid[$i]['document_category'];
-    		$reference_number = $data['reference_number'];
-    		$email = $data['email'];
-    		$upload_method = $smartid[$i]['upload_method'];
-    		$document_category = $smartid[$i]['document_category'];
+    $smart_id = $data['reference_number'].'#'.$smartid[$i]['document_category'];
+    $reference_number = $data['reference_number'];
+    $email = $data['email'];
+    $upload_method = $smartid[$i]['upload_method'];
+    $document_category = $smartid[$i]['document_category'];
 
-        	if ($insert_prepare != '' && $insert_prepare->execute()) {
-            	// echo json_encode("insert smartid table success");
-            	$insert_prepare->close();
-        	} else {
-            	// echo json_encode("insert smartid table failed");
-            	if ($insert_prepare != '') {
-                $insert_prepare->close();
-              }
-            	return -1;
-        	} 
-    } 	
-
+      if ($insert_prepare != '' && $insert_prepare->execute()) {
+          // echo json_encode("insert smartid table success");
+          $insert_prepare->close();
+      } else {
+          // echo json_encode("insert smartid table failed");
+          if ($insert_prepare != '') $insert_prepare->close();
+          return -1;
+      }
+  }
     return 0;
-
-
 }
-
-
-
-
 
 
 function insert_previous_name($con, $data, $login_information, $database_name){
@@ -132,6 +123,7 @@ function insert_previous_name($con, $data, $login_information, $database_name){
 
               $base64 = $pn[$i]['front']['data'];  
               $path = get_invoice_file_path().'/'.$data['reference_number'];
+              $link_path = './../data/'.$data['reference_number'];
 
              $insert_prepare = $con->prepare("INSERT INTO smartid_file (id, name, link, type) VALUES (?,?,?,?)");
              $insert_prepare->bind_param("ssss",$id, $name, $link, $type);
@@ -149,7 +141,7 @@ function insert_previous_name($con, $data, $login_information, $database_name){
               $id = $smart_id.'#'.$pn[$i]['type'].'#'.($temp_num+1);
               $type = $pn[$i]['front']['type'];
               $name = '';
-              $link = $path.'/'.$id.'.txt';
+              $link = $link_path.'/'.$id.'.txt';
 
 
             if ($insert_prepare != '' && $insert_prepare->execute()) {
@@ -269,7 +261,7 @@ function insert_document($con, $data,$login_information, $database_name) {
           // // echo json_encode("insert document table success");
           $insert_prepare->close();
       } else {
-          //echo json_encode("failed");
+          echo json_encode("failed");
           $insert_prepare->close();
           if ($insert_prepare != '') $insert_prepare->close();
           return -1;
@@ -288,6 +280,9 @@ function insert_file($con, $data,$login_information, $database_name){
 
 		$base64 = $smartid[$i]['front']['data'];	
 		$path = get_invoice_file_path().'/'.$data['reference_number'];
+		$link_path = './../data/'.$data['reference_number'];
+
+
 
 		$insert_prepare = $con->prepare("INSERT INTO smartid_file (id, name, link, type) VALUES (?,?,?,?)");
     	$insert_prepare->bind_param("ssss",$id, $name, $link, $type);
@@ -296,7 +291,7 @@ function insert_file($con, $data,$login_information, $database_name){
     	$id = 'F#'.$smart_id.'#'.$smartid[$i]['document_name'];
     	$type = $smartid[$i]['front']['type'];
     	$name = $smartid[$i]['front']['name'];
-    	$link = $path.'/'.$id.'.txt';
+    	$link = $link_path.'/'.$id.'.txt';
 
 
       if ($insert_prepare != '' && $insert_prepare->execute()) {
@@ -333,17 +328,16 @@ function insert_file($con, $data,$login_information, $database_name){
       $type_b = $smartid[$i]['back']['type'];
       $name_b = $smartid[$i]['back']['name'];
       $path.'/'.$id.'.txt';
-      $link_b = $path.'/'.$id_b.'.txt';
+      $link_b = $link_path.'/'.$id_b.'.txt';
 
-
-            if ($insert_prepare != '' && $insert_prepare->execute()) {
-                // // echo json_encode("success");
-                $insert_prepare->close();
-            } else {
-                // // echo json_encode("success");
-                if ($insert_prepare != '') $insert_prepare->close();
-                return -1;
-            } 
+      if ($insert_prepare != '' && $insert_prepare->execute()) {
+          // // echo json_encode("success");
+          $insert_prepare->close();
+      } else {
+          // // echo json_encode("success");
+          if ($insert_prepare != '') $insert_prepare->close();
+          return -1;
+      }
 
 
       //save file to txt
@@ -359,14 +353,30 @@ function insert_file($con, $data,$login_information, $database_name){
       /* If the necessary file is not created */
       // echo json_encode('NC');
     }
-
     }
-
-
-
     }
-
     return 0;
+}
+
+
+function update_values($con, $page_number, $reference_number) {
+   // updating the page number in the main table
+   $update_page_number = 'UPDATE '.get_main_customer_table_name().' SET page_completed=? WHERE reference_num=?';
+   // echo json_encode($update_page_number);
+   $result_page_number = $con->prepare($update_page_number);
+   if($result_page_number != NULL) {
+     $result_page_number->bind_param('ss', $page, $ref);
+     $page = $page_number;
+     $ref = $reference_number;
+   }
+   /* Setting the page number based on the smartid2 page  */
+   if( $result_page_number != '' && $result_page_number->execute() ) {
+     $result_page_number->close();
+     return 1;
+   } else if( $result_page_number != '') {
+       $result_page_number->close();
+   }
+   return -1;
 }
 
 
@@ -375,42 +385,51 @@ function insert_file($con, $data,$login_information, $database_name){
 $post_data = file_get_contents("php://input");
 // Decoding the json data to retrieve based on objects
 $request = json_decode($post_data, true);
+$reference_number = $request["reference_number"];
+
+// check for the reference number
+if ($reference_number == '') {
+  echo json_encode('no reference number');
+  return;
+}
+
 // customer object within the json is accessed in here
-
-
-
 if($request != NULL){
-
+  // establishing the DB connection with the login credentials present
    if(($con = get_connection_db($login_information, $database_name)) != NULL ) {
     mysqli_autocommit($con,true);
 		$insertion_smartid = insert_smartid($con, $request,$login_information, $database_name);
    		if($insertion_smartid == 0){
    			$insertion_document_details = insert_document_details($con, $request,$login_information, $database_name);
-
    			if($insertion_document_details == 0){
    				$insertion_file = insert_file($con, $request,$login_information, $database_name);
-
    				if($insertion_file == 0){
-
    					$insertion_document = insert_document($con, $request,$login_information, $database_name);
-   					if($insertion_document == 0){
-
+   					if($insertion_document == 0) {
               $insertion_previous_name = insert_previous_name($con, $request,$login_information, $database_name);
-              if($insertion_previous_name == 0){
+              if($insertion_previous_name == 0) {
                 //mysqli_commit($con);
                 //mysqli_close($con);
-                echo json_encode('success');
+                $update_page_number = update_values($con, '9', $reference_number);
+
+                if ($update_page_number == 1) {
+                  echo json_encode('success');
+                } else {
+                    echo json_encode('page number insertion failure');
+                }
               }
    					} else {
-   
+   					  echo json_encode('previous name fail');
    					}
    				}
-   			}else {
+   			} else {
+   			  echo json_encode('document detail failure');
    			}
    		} else {
-   		}
+   		    echo json_encode('smartid failure');
+   	}
 
-
+   $con->close();
    } else {
    	echo json_encode('connection failure');
    }

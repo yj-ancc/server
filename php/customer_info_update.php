@@ -1,4 +1,5 @@
 <?php
+header('Content-Type', 'application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
@@ -74,10 +75,10 @@ $con = get_connection_db($login_information, $database_name);
 
 /* If the connection is established */
 if($con != NULL) {
-    $update_query = "UPDATE ".get_sec_customer_table_name()." SET first_name=?, middle_name=?, last_name=?, is_single_name=?, dob=?, gender=?, state_born=?, country_born=? WHERE reference_num=?";
+    $update_query = "UPDATE ".get_sec_customer_table_name()." SET first_name=?, middle_name=?, last_name=?, is_single_name=?, dob=?, gender=?, state_born=?, suburb_born=?, country_born=? WHERE reference_num=?";
     $result = $con->prepare($update_query);
     if($result != NULL ) {
-      $result->bind_param("sssssssss", $f_name, $m_name, $l_name, $is_s_name, $t_dob, $t_g, $t_sb, $t_cb, $ref);
+      $result->bind_param("ssssssssss", $f_name, $m_name, $l_name, $is_s_name, $t_dob, $t_g, $t_sb, $t_sub, $t_cb, $ref);
       $f_name = ($first_name);
       $m_name = ($middle_name);
       $l_name = ($last_name);
@@ -85,6 +86,7 @@ if($con != NULL) {
       $t_dob = $dob;
       $t_g = $gender;
       $t_sb = $state_born;
+      $t_sub = $city_born;
       $t_cb = $country_born;
       $ref = ($ref_num);
 
