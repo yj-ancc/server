@@ -1,8 +1,9 @@
 <?php
 
 include_once 'names.php';
-include_once 'payment_create_insert.php';
 include_once 'login.php';
+include_once 'payment_create_insert.php';
+
 
 
 
@@ -12,7 +13,7 @@ $post_data = file_get_contents("php://input");
 // Decoding the json data to retrieve based on objects
 $request = json_decode($post_data, true);
 
-$debug = debug_check();
+$debug = 0;
 /* customer object within the json is accessed in here */
 /* Retrieving all the informations necessary for the payment information table design */
 if(!$debug) {

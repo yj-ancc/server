@@ -1,9 +1,10 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+include_once 'names.php';
+include_once 'login.php';
+
+header('Access-Control-Allow-Origin: '.get_server_det());
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-include_once 'login.php';
-include_once 'names.php';
 
 $debug = debug_check();
 

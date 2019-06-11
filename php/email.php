@@ -1,9 +1,10 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+include 'names.php';
+
+header('Access-Control-Allow-Origin: '.get_server_det());
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
-include 'names.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -45,7 +46,7 @@ function email_sending($from_user, $from_pass, $to_address, $to_address_name, $r
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = $subj;
     $mail->Body    = $body;
-    //$mail->AddEmbeddedImage('../../assets/images/logo/ancc_logo.png', 'logo', 'logo.png');
+    $mail->AddEmbeddedImage('../../assets/images/logo/ancc_logo.png', 'logo', 'logo.png');
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     $mail_send = $mail->send();
     
@@ -69,7 +70,7 @@ $request = json_decode($email_data, true);
 
 /*
 $debug = 0;
-if( $debug)  {
+if($debug)  {
 $email = 'savy.1712@gmail.com';
 $name = 'Sarveshwaran Rajarajan';
 $body = 'Attaching invoice';
@@ -92,7 +93,7 @@ if( $request['type'] == 'invoice') {
   $email = $request['email'];
   $name = $request['name'];
   $data_path = get_data_path().'/'.$ref_num.'/'.$type.'.pdf';
-  $body =  file_get_contents('html/template_part1.html').$name.', <br><br> '
+  $body =  file_get_contents('html/template_part1.html').$name.','
   .'Thanks for choosing Australian National Character Check. <br> Please see attached invoice. <br>'
   .file_get_contents('html/template_part2.html');
   $subj = 'Ancc - Invoice';
@@ -104,13 +105,13 @@ if( $request['type'] == 'invoice') {
   $code = $customer_information['code'];
   // TODO : change the body according to the design
   //$body = "Your verification code is  <b>".$code."</b>";
-  $body =  file_get_contents('html/template_part1.html').$name.', <br><br> 
-
-		
+  $body =  file_get_contents('html/template_part1.html').$name.',
   The Verification Code to continue your background check application is  <b>'.$code.' 
   </b>Complete verification by entering this code, or by clicking on the website link
   below:
+  
   http://www.ancc.com.au/exampleofalink
+
   You are only minutes away from lodging your application.
   Contact our friendly support staff during business hours if you require assistance.'
 

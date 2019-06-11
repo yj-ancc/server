@@ -1,6 +1,6 @@
 <?php
 // set the access control to the possible domain
-header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Origin: *');
 // Set the allow method
 header('Access-Control-Allow-Methods:POST, GET');
 // set the allow headers

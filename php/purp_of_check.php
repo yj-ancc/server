@@ -1,17 +1,18 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+include 'names.php';
+
+header('Access-Control-Allow-Origin: '.get_server_det());
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-include 'names.php';
 
 
 function get_connection_dbs($login_information, $database_name) {
 
-    if(file_exists('http://'.name_of_server().'/'.$login_information) == TRUE) {
+    if(file_exists(get_login_path().''.$login_information) == FALSE) {
         echo json_encode(file_get_contents($login_information));
         return NULL;
     }
-    $login_information = file_get_contents('http://'.name_of_server().'/'.$login_information);
+    $login_information = file_get_contents(get_login_path().''.$login_information);
 
     $request = json_decode($login_information, true);
     $user_name = $request['db']['name'];

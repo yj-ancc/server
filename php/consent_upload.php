@@ -1,11 +1,12 @@
 <?php
 header('Content-Type', 'application/json');
 
-header('Access-Control-Allow-Origin: *');
+include 'names.php';
+include 'login.php';
+
+header('Access-Control-Allow-Origin: '.get_server_det());
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-include 'login.php';
-include 'names.php';
 
 $database_name = get_db_name();
 $login_information =  '/'.get_login_file();

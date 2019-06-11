@@ -2,6 +2,9 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
+
+
 function debug_check() {
   return 0;
 }
@@ -161,13 +164,32 @@ function consent_table() {
   return 'customer_consent';
 }
 
-function get_user_name() {
-  return 'sarveshwaran';
+function abs_path() {
+  return '/ancc/ancc_individual/ancc';
 }
 
 function get_repo_path() {
-  return '/home/ubuntu'
-  //return '/home/'.get_user_name().'/ancc/ancc_individual/ancc';
+  $id = 0;
+  if($id == 0) {
+    // sarvesh dev env
+    return '/home/sarveshwaran/'.abs_path();
+  } else if ($id == 1) {
+      // server config
+      return '/home/ubuntu/';
+  } else {
+      return '';
+  }
+}
+
+function get_server_det() {
+  $id = 0;
+  if ($id == 0) {
+    // local setting
+    return 'http://localhost/';
+  } else if ($id == 1) {
+    // server config
+    return 'http://3.19.72.50/';
+  }
 }
 
 function get_data_path() {
@@ -176,6 +198,23 @@ function get_data_path() {
 
 function get_form_path() {
   return get_repo_path().'/form';
+}
+
+function get_login_path() {
+  return './../../../';
+}
+
+
+function get_stripe_key($path, $login_information) {
+  if(file_exists($path.''.$login_information) == FALSE) {
+      echo json_encode('NOT FOUND STRIPE KEY');
+      return NULL;
+  }
+  $login_information = file_get_contents($path.''.$login_information);
+  // echo json_encode($login_information);
+  $request = json_decode($login_information, true);
+  $key = $request['stripe']['privateKey'];
+  return $key;
 }
 
 

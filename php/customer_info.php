@@ -1,19 +1,15 @@
 <?php
 header('Content-Type', 'application/json');
+include_once 'names.php';
 include_once 'login.php';
 include_once 'creating_insert.php';
 include_once 'setupvalues.php';
 include_once 'update.php';
-include_once 'names.php';
-
-//header('Access-Control-Allow-Origin: *');
-//header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-//header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 
     // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header("Access-Control-Allow-Origin: ".get_server_det());
         header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
 

@@ -1,12 +1,13 @@
 <?php
-header('Content-Type', 'application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-
 include 'names.php';
 include 'login.php';
 include 'fetch.php';
+
+header('Content-Type', 'application/json');
+header('Access-Control-Allow-Origin: '.get_server_det());
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+
 
 $post_data = file_get_contents("php://input");
 $request = json_decode($post_data, true);

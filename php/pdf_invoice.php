@@ -1,11 +1,12 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-include "fpdf/fpdf.php";
 include 'names.php';
 include 'payment_charges.php';
 include 'utils.php';
+
+header('Access-Control-Allow-Origin: '.get_server_det());
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+include "fpdf/fpdf.php";
 
 class PDF extends FPDF {
 
@@ -305,7 +306,7 @@ $pdf->BasicTable($font_type, $data_header, $ref_num, $date, $invoice_num, $name,
 $invoice_folder = get_invoice_file_path(). '/' .$ref_num ;
 $invoice_file_name = $invoice_folder.'/'.get_invoice_name();
 $invoice_file_content = '';
-if (mkdir($invoice_folder, 0777, true) ) {
+if (!file_exists($invoice_file_name) && mkdir($invoice_folder, 0777, true) ) {
     /* Procedure to download the invoice */
     /* Output the file name with 'F' tag */
     /* save it as invoice.pdf inside the reference number */
